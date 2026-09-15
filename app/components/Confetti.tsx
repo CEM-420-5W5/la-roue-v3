@@ -22,7 +22,9 @@ export default function Confetti({ active }: ConfettiProps) {
 
     const myConfetti = confetti.create(canvas, {
       resize: true,
-      useWorker: true,
+      // Les formes "bitmap" (shapeFromText) ne sont pas correctement transmises
+      // au Web Worker par canvas-confetti, ce qui empêche tout affichage.
+      useWorker: false,
     });
     instanceRef.current = myConfetti;
 
@@ -38,7 +40,9 @@ export default function Confetti({ active }: ConfettiProps) {
       scalar: 2.5,
       gravity: 0.7,
       ticks: 250,
-      disableForReducedMotion: true,
+      // Ne pas désactiver l'animation même si l'OS a "mouvement réduit" activé :
+      // sinon canvas-confetti annule silencieusement toute l'animation.
+      disableForReducedMotion: false,
     };
 
     const timeouts: ReturnType<typeof setTimeout>[] = [];
