@@ -43,12 +43,13 @@ export default function Wheel({ names }: WheelProps) {
     const finalRotation = rotation + spins * 360 + delta;
 
     setRotation(finalRotation);
-    setSelectedName(names[randomIndex]);
+    setSelectedName("???");
 
     setTimeout(() => {
       setIsSpinning(false);
       setResultId((id) => id + 1);
       setShowModal(true);
+      setSelectedName(names[randomIndex]);
     }, 3000);
   };
 
