@@ -41,12 +41,12 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col flex-1 bg-zinc-50 font-sans dark:bg-black min-h-screen">
+    <div className="flex flex-col flex-1 font-sans min-h-screen">
       <main className="flex flex-1 gap-8 py-8 px-6 max-w-7xl mx-auto w-full">
         {/* Colonne gauche - Liste de noms */}
-        <div className="flex-1 flex flex-col gap-8 bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6">
-          <h1 className="text-4xl font-bold text-black dark:text-white">
-            Liste de Noms
+        <div className="spidey-card flex-1 flex flex-col gap-8 rounded-lg shadow-lg p-6">
+          <h1 className="font-comic text-5xl text-[var(--spidey-red)] drop-shadow-[2px_2px_0_rgba(27,27,100,0.8)]">
+            🕸️ La Toile des Noms
           </h1>
 
           <div className="flex gap-2">
@@ -56,11 +56,11 @@ export default function Home() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && addName()}
               placeholder="Ajouter un nouveau nom"
-              className="flex-1 px-4 py-2 border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-4 py-2 border-2 border-[var(--spidey-blue-light)] rounded-lg bg-black/40 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[var(--spidey-red)]"
             />
             <button
               onClick={addName}
-              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+              className="px-6 py-2 bg-[var(--spidey-red)] text-white rounded-lg hover:bg-red-700 transition-colors font-bold border-2 border-[var(--spidey-blue-light)]"
             >
               Ajouter
             </button>
@@ -68,14 +68,14 @@ export default function Home() {
 
           <div className="flex flex-col gap-2">
             {names.length === 0 ? (
-              <p className="text-zinc-500 dark:text-zinc-400 text-center py-4">
+              <p className="text-zinc-400 text-center py-4">
                 Aucun nom dans la liste
               </p>
             ) : (
               names.map((name, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 p-3 bg-zinc-100 dark:bg-zinc-800 rounded-lg"
+                  className="flex items-center gap-2 p-3 bg-black/40 border border-[var(--spidey-blue-light)]/50 rounded-lg"
                 >
                   {editingIndex === index ? (
                     <>
@@ -86,36 +86,36 @@ export default function Home() {
                         onKeyPress={(e) =>
                           e.key === "Enter" && saveEdit(index)
                         }
-                        className="flex-1 px-3 py-1 border border-blue-500 rounded dark:bg-zinc-700 dark:text-white focus:outline-none"
+                        className="flex-1 px-3 py-1 border border-[var(--spidey-red)] rounded bg-black/60 text-white focus:outline-none"
                         autoFocus
                       />
                       <button
                         onClick={() => saveEdit(index)}
-                        className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600"
+                        className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
                       >
                         Valider
                       </button>
                       <button
                         onClick={cancelEdit}
-                        className="px-3 py-1 bg-zinc-400 text-white text-sm rounded hover:bg-zinc-500"
+                        className="px-3 py-1 bg-zinc-600 text-white text-sm rounded hover:bg-zinc-500"
                       >
                         Annuler
                       </button>
                     </>
                   ) : (
                     <>
-                      <span className="flex-1 text-lg text-black dark:text-white">
-                        {name}
+                      <span className="flex-1 text-lg text-white">
+                        🕷️ {name}
                       </span>
                       <button
                         onClick={() => startEditing(index)}
-                        className="px-3 py-1 bg-yellow-500 text-white text-sm rounded hover:bg-yellow-600"
+                        className="px-3 py-1 bg-[var(--spidey-blue-light)] text-white text-sm rounded hover:bg-blue-700"
                       >
                         Éditer
                       </button>
                       <button
                         onClick={() => deleteName(index)}
-                        className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+                        className="px-3 py-1 bg-[var(--spidey-red)] text-white text-sm rounded hover:bg-red-700"
                       >
                         Supprimer
                       </button>

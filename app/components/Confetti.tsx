@@ -13,32 +13,18 @@ interface Particle {
   vy: number;
   rotation: number;
   rotationSpeed: number;
-  color: string;
   size: number;
-  shape: "rect" | "circle";
+  shape: "web" | "spider";
   gravity: number;
   opacity: number;
   drag: number;
 }
 
-const CONFETTI_COLORS = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#45B7D1",
-  "#FFA07A",
-  "#98D8C8",
-  "#F7DC6F",
-  "#BB8FCE",
-  "#85C1E2",
-  "#FF1493",
-  "#FFD700",
-  "#00FF7F",
-  "#FF4500",
-  "#1E90FF",
-  "#FF69B4",
-  "#7FFF00",
-  "#FF8C00",
-];
+const SHAPES: Particle["shape"][] = ["web", "spider"];
+const EMOJI: Record<Particle["shape"], string> = {
+  web: "🕸️",
+  spider: "🕷️",
+};
 
 export default function Confetti({ active }: ConfettiProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -71,10 +57,8 @@ export default function Confetti({ active }: ConfettiProps) {
           vy: Math.sin(angle) * speed - 4,
           rotation: Math.random() * 360,
           rotationSpeed: (Math.random() - 0.5) * 25,
-          color:
-            CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
-          size: 6 + Math.random() * 9,
-          shape: Math.random() > 0.5 ? "rect" : "circle",
+          size: 18 + Math.random() * 16,
+          shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
           gravity: 0.12 + Math.random() * 0.12,
           opacity: 1,
           drag: 0.985,
@@ -92,10 +76,8 @@ export default function Confetti({ active }: ConfettiProps) {
           vy: 2 + Math.random() * 3,
           rotation: Math.random() * 360,
           rotationSpeed: (Math.random() - 0.5) * 20,
-          color:
-            CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
-          size: 5 + Math.random() * 7,
-          shape: Math.random() > 0.5 ? "rect" : "circle",
+          size: 16 + Math.random() * 14,
+          shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
           gravity: 0.08 + Math.random() * 0.08,
           opacity: 1,
           drag: 0.995,
@@ -109,20 +91,20 @@ export default function Confetti({ active }: ConfettiProps) {
     const timeouts: ReturnType<typeof setTimeout>[] = [];
 
     // Grosses explosions à répétition partout à l'écran
-    createBurst(w / 2, h / 2, 180);
-    timeouts.push(setTimeout(() => createBurst(w * 0.15, h * 0.35, 140), 150));
-    timeouts.push(setTimeout(() => createBurst(w * 0.85, h * 0.35, 140), 250));
-    timeouts.push(setTimeout(() => createBurst(w * 0.5, h * 0.15, 150), 400));
-    timeouts.push(setTimeout(() => createBurst(w * 0.1, h * 0.65, 120), 600));
-    timeouts.push(setTimeout(() => createBurst(w * 0.9, h * 0.65, 120), 700));
-    timeouts.push(setTimeout(() => createBurst(w * 0.3, h * 0.8, 120), 900));
-    timeouts.push(setTimeout(() => createBurst(w * 0.7, h * 0.8, 120), 1000));
-    timeouts.push(setTimeout(() => createBurst(w / 2, h / 2, 160), 1300));
+    createBurst(w / 2, h / 2, 18);
+    timeouts.push(setTimeout(() => createBurst(w * 0.15, h * 0.35, 3), 150));
+    timeouts.push(setTimeout(() => createBurst(w * 0.85, h * 0.35, 3), 250));
+    timeouts.push(setTimeout(() => createBurst(w * 0.5, h * 0.15, 3), 400));
+    timeouts.push(setTimeout(() => createBurst(w * 0.1, h * 0.65, 3), 600));
+    timeouts.push(setTimeout(() => createBurst(w * 0.9, h * 0.65, 3), 700));
+    timeouts.push(setTimeout(() => createBurst(w * 0.3, h * 0.8, 3), 900));
+    timeouts.push(setTimeout(() => createBurst(w * 0.7, h * 0.8, 3), 1000));
+    timeouts.push(setTimeout(() => createBurst(w / 2, h / 2, 160), 10));
 
     // Pluie continue de confettis pendant quelques secondes
-    for (let i = 0; i < 25; i++) {
+    /*for (let i = 0; i < 25; i++) {
       timeouts.push(setTimeout(() => createRain(18), i * 180));
-    }
+    }*/
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -141,14 +123,10 @@ export default function Confetti({ active }: ConfettiProps) {
         ctx.translate(p.x, p.y);
         ctx.rotate((p.rotation * Math.PI) / 180);
         ctx.globalAlpha = Math.max(p.opacity, 0);
-        ctx.fillStyle = p.color;
-        if (p.shape === "rect") {
-          ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
-        } else {
-          ctx.beginPath();
-          ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
-          ctx.fill();
-        }
+        ctx.font = `${p.size}px sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(EMOJI[p.shape], 0, 0);
         ctx.restore();
       });
 

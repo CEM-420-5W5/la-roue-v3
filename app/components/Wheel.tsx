@@ -4,14 +4,12 @@ import { useState } from "react";
 import WinnerModal from "./WinnerModal";
 
 const COLORS = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#45B7D1",
-  "#FFA07A",
-  "#98D8C8",
-  "#F7DC6F",
-  "#BB8FCE",
-  "#85C1E2",
+  "#E23636",
+  "#1B1B64",
+  "#0A0A0A",
+  "#2D4BD9",
+  "#8B0000",
+  "#111133",
 ];
 
 interface WheelProps {
@@ -55,20 +53,20 @@ export default function Wheel({ names }: WheelProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8 bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6 flex-1">
-      <h2 className="text-2xl font-bold text-black dark:text-white">
-        Roue de la Chance
+    <div className="spidey-card flex flex-col items-center justify-center gap-8 rounded-lg shadow-lg p-6 flex-1">
+      <h2 className="font-comic text-4xl text-[var(--spidey-red)] drop-shadow-[2px_2px_0_rgba(27,27,100,0.8)]">
+        🕸️ Roue de la Toile
       </h2>
 
       {/* Flèche */}
       <div className="relative h-12 flex items-center justify-center">
-        <div className="text-4xl">▼</div>
+        <div className="text-4xl text-[var(--spidey-red)]">▼</div>
       </div>
 
       {/* Roue */}
       <div className="relative w-80 h-80 flex items-center justify-center">
         {names.length === 0 ? (
-          <p className="text-zinc-500 dark:text-zinc-400 text-center">
+          <p className="text-zinc-400 text-center">
             Ajoutez des noms pour créer la roue
           </p>
         ) : (
@@ -123,7 +121,7 @@ export default function Wheel({ names }: WheelProps) {
                   <path
                     d={pathData}
                     fill={COLORS[index % COLORS.length]}
-                    stroke="white"
+                    stroke="#e5e5e5"
                     strokeWidth="2"
                   />
                   <text
@@ -151,20 +149,20 @@ export default function Wheel({ names }: WheelProps) {
               cx="160"
               cy="160"
               r="25"
-              fill="white"
-              stroke="#333"
-              strokeWidth="2"
+              fill="#e5e5e5"
+              stroke="var(--spidey-red)"
+              strokeWidth="3"
             />
             <text
               x="160"
               y="165"
               textAnchor="middle"
-              fill="#333"
+              fill="var(--spidey-red)"
               fontSize="12"
               fontWeight="bold"
               style={{ pointerEvents: "none" }}
             >
-              SPIN
+              🕷️
             </text>
           </svg>
         )}
@@ -173,8 +171,8 @@ export default function Wheel({ names }: WheelProps) {
       {/* Nom sélectionné */}
       {selectedName && (
         <div className="text-center">
-          <p className="text-zinc-600 dark:text-zinc-400">Sélectionné :</p>
-          <p className="text-3xl font-bold text-blue-500 dark:text-blue-400">
+          <p className="text-zinc-400">Sélectionné :</p>
+          <p className="font-comic text-4xl text-[var(--spidey-red)]">
             {selectedName}
           </p>
         </div>
@@ -184,9 +182,9 @@ export default function Wheel({ names }: WheelProps) {
       <button
         onClick={spinWheel}
         disabled={isSpinning || names.length === 0}
-        className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-lg hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="px-8 py-3 bg-gradient-to-r from-[var(--spidey-red)] to-[var(--spidey-blue-light)] text-white font-bold rounded-lg border-2 border-white/20 hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
       >
-        {isSpinning ? "En rotation..." : "Faire tourner"}
+        {isSpinning ? "En rotation..." : "🕸️ Faire tourner 🕸️"}
       </button>
 
       {showModal && selectedName && (
