@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import WinnerModal from "./WinnerModal";
 
 const COLORS = [
   "#FF6B6B",
@@ -21,22 +22,35 @@ export default function Wheel({ names }: WheelProps) {
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [resultId, setResultId] = useState(0);
 
   const spinWheel = () => {
     if (isSpinning || names.length === 0) return;
 
     setIsSpinning(true);
-    const spins = 5 + Math.random() * 5;
+    setShowModal(false);
+
     const randomIndex = Math.floor(Math.random() * names.length);
     const segmentAngle = 360 / names.length;
-    const finalRotation =
-      spins * 360 + (360 - randomIndex * segmentAngle - segmentAngle / 2);
+    // Angle (dans le repère du SVG, sens horaire depuis 3h) du centre du segment choisi.
+    const targetCenter = randomIndex * segmentAngle + segmentAngle / 2;
+    // La flèche pointe vers le haut de la roue, soit 270° dans ce repère.
+    const target = (((270 - targetCenter) % 360) + 360) % 360;
+    // On tient compte de la rotation déjà accumulée pour viser le bon angle absolu.
+    const currentMod = ((rotation % 360) + 360) % 360;
+    const delta = ((target - currentMod) % 360 + 360) % 360;
 
-    setRotation((prev) => prev + finalRotation);
+    const spins = 5 + Math.random() * 5;
+    const finalRotation = rotation + spins * 360 + delta;
+
+    setRotation(finalRotation);
     setSelectedName(names[randomIndex]);
 
     setTimeout(() => {
       setIsSpinning(false);
+      setResultId((id) => id + 1);
+      setShowModal(true);
     }, 3000);
   };
 
@@ -174,6 +188,14 @@ export default function Wheel({ names }: WheelProps) {
       >
         {isSpinning ? "En rotation..." : "Faire tourner"}
       </button>
+
+      {showModal && selectedName && (
+        <WinnerModal
+          key={resultId}
+          winner={selectedName}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }
