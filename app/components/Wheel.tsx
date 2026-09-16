@@ -31,16 +31,21 @@ export default function Wheel({ names }: WheelProps) {
 
     const randomIndex = Math.floor(Math.random() * names.length);
     const segmentAngle = 360 / names.length;
+    console.log("Random index:", randomIndex, "Segment angle:", segmentAngle);
     // Angle (dans le repère du SVG, sens horaire depuis 3h) du centre du segment choisi.
-    const targetCenter = randomIndex * segmentAngle + segmentAngle / 2;
+    let randomVariationOfTheInsideOfTheSegment = Math.random() * segmentAngle
+    const targetCenter = randomIndex * segmentAngle + randomVariationOfTheInsideOfTheSegment;
     // La flèche pointe vers le haut de la roue, soit 270° dans ce repère.
     const target = (((270 - targetCenter) % 360) + 360) % 360;
     // On tient compte de la rotation déjà accumulée pour viser le bon angle absolu.
     const currentMod = ((rotation % 360) + 360) % 360;
     const delta = ((target - currentMod) % 360 + 360) % 360;
 
-    const spins = 5 + Math.random() * 5;
+    const spins = 5 + Math.ceil(Math.random()) * 5;
+    console.log("Spins:", spins);
     const finalRotation = rotation + spins * 360 + delta;
+    
+    console.log("Target center:", targetCenter, "Target:", target, "Current mod:", currentMod, "Delta:", delta, "Final rotation:", finalRotation);
 
     setRotation(finalRotation);
     setSelectedName("???");
